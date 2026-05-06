@@ -1,0 +1,181 @@
+CPU: 15코어
+Step49: Erlang-C 피처 + LGB 5seeds + XGB 3seeds + CAT 3seeds 앙상블
+Seeds: LGB 5개 + XGB 3개 + CAT 3개 × 5folds
+Seeds: 5개 × LGB only = 25모델
+
+============================================================
+1. 데이터 로딩
+============================================================
+train: (250000, 108) | test: (50000, 107)
+
+============================================================
+2. 피처 엔지니어링
+============================================================
+  temporal...
+  lag/rolling...
+  onset...
+  threshold...
+  sc_* 집계...
+  [Step48] layout_agg 제거 완료 (Adversarial 피처 원천 차단)
+  sc_* 집계: train 10000개 시나리오, test 2000개 시나리오 (독립 계산)
+  trajectory...
+  layout TE...
+  layout_te: OOF 완료 | test cold-start 20000행
+  [NEW] lead 피처 (18개 컬럼 × lead1~5, NaN fill)...
+  [NEW] remaining 피처 (10개 컬럼, 나머지 슬롯 통계)...
+
+  [Lead 피처 상관관계 Top10]
+    lead_max3_low_battery_ratio                  : +0.3866
+    lead_mean3_low_battery_ratio                 : +0.3795
+    lead3_low_battery_ratio                      : +0.3777
+    lead2_low_battery_ratio                      : +0.3769
+    lead4_low_battery_ratio                      : +0.3750
+    lead5_low_battery_ratio                      : +0.3706
+    lead1_low_battery_ratio                      : +0.3693
+    lead_min3_low_battery_ratio                  : +0.3644
+    remain_max_low_battery_ratio                 : +0.3622
+    lead_mean3_order_inflow_15m                  : +0.3530
+
+============================================================
+3. Cluster Extreme Risk 피처 (Step32)
+============================================================
+  극단값 시나리오: 1,666/10,000 (16.7%)
+  cluster_extreme_ratio vs target 상관: 0.4708
+  layout_extreme_ratio  vs target 상관: 0.2276
+
+============================================================
+4. 피처 선택
+============================================================
+  Step35 베이스: ~570피처
+  + Lead 피처:     140개
+  + Remaining 피처:43개
+  총 피처 수:      665개
+  train: (250000, 665) | test: (50000, 665)
+
+============================================================
+5. 학습 시작
+============================================================
+
+LightGBM × 멀티시드
+    fold0: MAE=8.4155 | iter=2041
+    fold1: MAE=8.5564 | iter=454
+    fold2: MAE=8.1068 | iter=1538
+    fold3: MAE=8.9452 | iter=1018
+    fold4: MAE=8.5690 | iter=567
+  seed=42 OOF: 8.5186 | 8.5min
+    fold0: MAE=8.4510 | iter=1460
+    fold1: MAE=8.5686 | iter=532
+    fold2: MAE=8.0977 | iter=2001
+    fold3: MAE=8.9311 | iter=2129
+    fold4: MAE=8.5392 | iter=684
+  seed=123 OOF: 8.5175 | 9.7min
+    fold0: MAE=8.4586 | iter=1459
+    fold1: MAE=8.5478 | iter=668
+    fold2: MAE=8.0705 | iter=2883
+    fold3: MAE=8.9364 | iter=1420
+    fold4: MAE=8.5470 | iter=1756
+  seed=456 OOF: 8.5121 | 11.3min
+    fold0: MAE=8.4522 | iter=1789
+    fold1: MAE=8.5554 | iter=490
+    fold2: MAE=8.1282 | iter=1815
+    fold3: MAE=8.9434 | iter=2340
+    fold4: MAE=8.5811 | iter=1473
+  seed=789 OOF: 8.5321 | 11.0min
+    fold0: MAE=8.4581 | iter=1142
+    fold1: MAE=8.5430 | iter=691
+    fold2: MAE=8.1028 | iter=2963
+    fold3: MAE=8.9352 | iter=2009
+    fold4: MAE=8.5594 | iter=834
+  seed=2024 OOF: 8.5197 | 10.6min
+  LGB 평균: 8.5200 ± 0.0066
+
+XGBoost × 멀티시드
+    fold0: MAE=8.4639 | iter=775
+    fold1: MAE=8.6036 | iter=149
+    fold2: MAE=8.1585 | iter=1381
+    fold3: MAE=9.0042 | iter=285
+    fold4: MAE=8.6328 | iter=268
+  seed=42 OOF: 8.5726 | 2.7min
+    fold0: MAE=8.4832 | iter=248
+    fold1: MAE=8.5903 | iter=265
+    fold2: MAE=8.2374 | iter=382
+    fold3: MAE=9.0066 | iter=344
+    fold4: MAE=8.6309 | iter=351
+  seed=123 OOF: 8.5897 | 1.8min
+    fold0: MAE=8.4529 | iter=515
+    fold1: MAE=8.6231 | iter=196
+    fold2: MAE=8.2203 | iter=483
+    fold3: MAE=9.0058 | iter=472
+    fold4: MAE=8.6049 | iter=204
+  seed=456 OOF: 8.5814 | 2.0min
+  XGB 평균: 8.5812 ± 0.0070
+
+CatBoost × 멀티시드
+    fold0: MAE=8.5172 | iter=893
+    fold1: MAE=8.6284 | iter=909
+    fold2: MAE=8.2229 | iter=1117
+    fold3: MAE=9.0369 | iter=737
+    fold4: MAE=8.5403 | iter=1154
+  seed=42 OOF: 8.5891 | 5.3min
+    fold0: MAE=8.5292 | iter=820
+    fold1: MAE=8.6454 | iter=766
+    fold2: MAE=8.1260 | iter=2254
+    fold3: MAE=9.0496 | iter=647
+    fold4: MAE=8.5847 | iter=647
+  seed=123 OOF: 8.5870 | 5.8min
+    fold0: MAE=8.4921 | iter=1302
+    fold1: MAE=8.6322 | iter=669
+    fold2: MAE=8.2069 | iter=944
+    fold3: MAE=9.0418 | iter=892
+    fold4: MAE=8.5623 | iter=435
+  seed=456 OOF: 8.5870 | 5.2min
+  CAT 평균: 8.5877 ± 0.0010
+
+============================================================
+6. 결과 집계
+============================================================
+  LightGBM 시드평균 OOF MAE: 8.5000
+  XGBoost  시드평균 OOF MAE: 8.5500
+  CatBoost 시드평균 OOF MAE: 8.5456
+  LGB+XGB+CAT 앙상블 OOF MAE: 8.4988 (w=0.45/0.27/0.27)
+
+Step45 OOF MAE: 8.4988
+Step36 베이스:  8.5261 (3모델 앙상블)
+Step37 LGB단독: 8.5326 (비교 기준)
+차이 vs step37: -0.0338
+
+============================================================
+7. 극단값 구간별 MAE 분석
+============================================================
+  0-10    : n=132585 (53.0%) | MAE=  2.75 | bias=+1.36
+  10-30   : n= 65314 (26.1%) | MAE=  7.87 | bias=+2.51
+  30-50   : n= 32221 (12.9%) | MAE=  8.08 | bias=-5.61
+  50-100  : n= 16094 ( 6.4%) | MAE= 31.59 | bias=-31.47
+  100+    : n=  3786 ( 1.5%) | MAE=126.07 | bias=-126.07
+
+============================================================
+8. Step 비교
+============================================================
+  Step32 OOF MAE: 8.5729  (469 피처)
+  Step35 OOF MAE: 8.5323  (570 피처, +lead/remaining)
+  Step49 OOF MAE: 8.4988  (665 피처, Erlang-C+LGB+XGB+CAT)
+  Step35→36 변화: -0.0335
+
+  Step35 Public: 10.0533
+  Step49 예상 Public: ~9.8788  (갭 1.38 목표)
+
+  총 소요 시간: 73.9분
+
+OOF 저장: /Users/kim/Desktop/데이콘/스마트 창고 출고 지연 예측 AI 경진대회/oof_step49.csv
+제출 파일: submission_step49_ensemble.csv
+OOF MAE: 8.4988
+
+예측값 분포:
+count    50000.000
+mean        19.133
+std         14.732
+min          0.003
+25%          5.220
+50%         13.853
+75%         33.372
+max         87.953

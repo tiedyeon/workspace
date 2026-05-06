@@ -1,0 +1,54 @@
+/Users/kim/Desktop/데이콘/스마트 창고 출고 지연 예측 AI 경진대회/step22_lstm_v2.py:14: SyntaxWarning: "\ " is an invalid escape sequence. Such sequences will not work in the future. Did you mean "\\ "? A raw string is also an option.
+  cd ~/Desktop/데이콘/스마트\ 창고\ 출고\ 지연\ 예측\ AI\ 경진대회
+==============================================================
+Step22 LSTM v2 | sc_* 포함 전체 피처 | device=mps
+Seeds=[42, 123, 456] | EPOCHS=200 | PATIENCE=25
+==============================================================
+
+[1] 데이터 로드...
+  train: (250000, 108) | test: (50000, 107)
+
+[2] 피처 엔지니어링...
+  피처 수: 448개 | train: (250000, 448) | test: (50000, 448)
+
+[3] 시퀀스 변환...
+  train seq: (10000, 25, 448) | test seq: (2000, 25, 448)
+
+[4] GroupKFold CV 학습...
+  seed=42 fold=1 | best_val_mae=9.8576 | stop@ep33 | 0.4min
+  seed=42 fold=2 | best_val_mae=10.3045 | stop@ep39 | 0.5min
+  seed=42 fold=3 | best_val_mae=9.2010 | stop@ep37 | 0.5min
+  seed=42 fold=4 | best_val_mae=9.5875 | stop@ep33 | 0.4min
+  seed=42 fold=5 | best_val_mae=9.1616 | stop@ep32 | 0.4min
+  Seed 42 OOF MAE (per-slot): 9.6224
+  seed=123 fold=1 | best_val_mae=9.8572 | stop@ep35 | 0.4min
+  seed=123 fold=2 | best_val_mae=10.3312 | stop@ep36 | 0.4min
+  seed=123 fold=3 | best_val_mae=9.2000 | stop@ep35 | 0.4min
+  seed=123 fold=4 | best_val_mae=9.6311 | stop@ep34 | 0.4min
+  seed=123 fold=5 | best_val_mae=9.1841 | stop@ep38 | 0.5min
+  Seed 123 OOF MAE (per-slot): 9.6407
+  seed=456 fold=1 | best_val_mae=9.8148 | stop@ep33 | 0.4min
+  seed=456 fold=2 | best_val_mae=10.3008 | stop@ep35 | 0.4min
+  seed=456 fold=3 | best_val_mae=9.1608 | stop@ep36 | 0.4min
+  seed=456 fold=4 | best_val_mae=9.6244 | stop@ep34 | 0.4min
+  seed=456 fold=5 | best_val_mae=9.1787 | stop@ep32 | 0.4min
+  Seed 456 OOF MAE (per-slot): 9.6159
+
+[5] 최종 결과:
+  LSTM v2 OOF (시나리오 평균, 3 seeds):
+    시나리오 MAE = 8.7539
+  비교: Step21 LSTM(sc_* 없음) OOF=9.1052 | Step20 GBM OOF=8.5964
+
+[6] 제출 파일 생성...
+  저장: submission_step22_lstm_v2_only.csv
+  저장: submission_step22_blend.csv (GBM70+LSTMv2 30%)
+  저장: oof_step22_lstm_v2.csv  (step23 TabPFN 메타러너용)
+
+==============================================================
+완료! 총 소요: 7.5분
+LSTM v2 시나리오 OOF MAE : 8.7539
+비교 — Step21 LSTM       : 9.1052  (sc_* 없음)
+비교 — Step20 GBM        : 8.5964
+예상 Public (LSTM 단독)  : ~10.2179
+예측 분포: mean=17.309 std=12.807 min=1.968 max=38.244
+==============================================================

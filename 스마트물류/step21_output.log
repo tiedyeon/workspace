@@ -1,0 +1,62 @@
+============================================================
+Step21: LSTM Sequence Model
+============================================================
+Device: mps | Seeds: [42, 123, 456] | Epochs: 100 | Blend: GBM 70% + LSTM 30%
+
+[1] 데이터 로드...
+  train: (250000, 108) | test: (50000, 107)
+
+[2] 전처리...
+  LSTM 입력 피처: 33개
+
+[3] 시퀀스 변환 (n_scenarios, 25, n_feats)...
+  train: (10000, 25, 33) | test: (2000, 25, 33)
+
+[4] GroupKFold CV 학습...
+  seed=42 fold=1 | best_val_mae=9.1276 | stop@ep100 | 0.5min
+  seed=42 fold=2 | best_val_mae=9.1907 | stop@ep100 | 0.5min
+  seed=42 fold=3 | best_val_mae=8.7332 | stop@ep100 | 0.6min
+  seed=42 fold=4 | best_val_mae=9.5731 | stop@ep100 | 0.6min
+  seed=42 fold=5 | best_val_mae=9.2553 | stop@ep100 | 0.6min
+  Seed 42 누적 OOF MAE (유효행): 9.1760
+  seed=123 fold=1 | best_val_mae=9.1778 | stop@ep100 | 0.5min
+  seed=123 fold=2 | best_val_mae=9.2718 | stop@ep100 | 0.5min
+  seed=123 fold=3 | best_val_mae=8.7924 | stop@ep100 | 0.6min
+  seed=123 fold=4 | best_val_mae=9.5256 | stop@ep100 | 0.6min
+  seed=123 fold=5 | best_val_mae=9.2304 | stop@ep100 | 0.6min
+  Seed 123 누적 OOF MAE (유효행): 9.1416
+  seed=456 fold=1 | best_val_mae=9.1106 | stop@ep100 | 0.6min
+  seed=456 fold=2 | best_val_mae=9.1643 | stop@ep100 | 0.6min
+  seed=456 fold=3 | best_val_mae=8.7273 | stop@ep100 | 0.6min
+  seed=456 fold=4 | best_val_mae=9.5962 | stop@ep100 | 0.5min
+  seed=456 fold=5 | best_val_mae=9.2109 | stop@ep100 | 0.5min
+  Seed 456 누적 OOF MAE (유효행): 9.1052
+
+[5] LSTM OOF MAE: 9.1052
+    (Step20 GBM OOF: 8.5964 | Step14 GBM OOF: 8.6037)
+
+[6] Test 예측 생성...
+
+[7] 제출 파일 생성...
+
+============================================================
+완료! 총 소요시간: 8.4분
+LSTM OOF MAE:    9.1052
+Step20 GBM OOF:  8.5964
+예상 Public (LSTM 단독): ~10.5742
+예상 Public (Blend):     ~10.2180
+
+제출 파일:
+  LSTM 단독: submission_step21_lstm_only.csv
+  GBM+LSTM:  submission_step21_blend.csv
+
+예측값 분포 (Blend):
+count    50000.000
+mean        18.330
+std         13.090
+min          0.071
+25%          5.702
+50%         14.034
+75%         32.003
+max         81.726
+============================================================

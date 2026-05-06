@@ -1,0 +1,187 @@
+============================================================
+Step19: Temporal Feature Engineering Ensemble
+============================================================
+
+[1] 데이터 로드...
+  train: (250000, 94), test: (50000, 93), layout: (300, 15)
+
+[2] 피처 엔지니어링...
+  train features: 439개
+  test  features: 439개
+
+[3] GroupKFold CV (scenario_id, 5folds × 5seeds)...
+
+  -- Seed 42 (1/5) --
+    fold1 lgb_mae: MAE=14.7830 (5.5s)
+    fold1 lgb_huber: MAE=14.8692 (8.2s)
+    fold1 xgb_abs: MAE=14.9755 (4.0s)
+    fold1 cat_mae: MAE=14.7792 (3.4s)
+    fold2 lgb_mae: MAE=15.2629 (5.3s)
+    fold2 lgb_huber: MAE=15.3525 (8.3s)
+    fold2 xgb_abs: MAE=15.2573 (4.2s)
+    fold2 cat_mae: MAE=15.2574 (3.6s)
+    fold3 lgb_mae: MAE=14.0948 (5.3s)
+    fold3 lgb_huber: MAE=14.2198 (7.3s)
+    fold3 xgb_abs: MAE=14.3856 (3.8s)
+    fold3 cat_mae: MAE=14.0903 (3.2s)
+    fold4 lgb_mae: MAE=14.6687 (5.4s)
+    fold4 lgb_huber: MAE=14.7420 (8.8s)
+    fold4 xgb_abs: MAE=14.7608 (3.8s)
+    fold4 cat_mae: MAE=14.6646 (3.3s)
+    fold5 lgb_mae: MAE=14.2761 (5.4s)
+    fold5 lgb_huber: MAE=14.3281 (8.4s)
+    fold5 xgb_abs: MAE=14.2781 (4.2s)
+    fold5 cat_mae: MAE=14.2716 (3.4s)
+  Seed 42 | lgb_mae OOF MAE: 14.6171
+  Seed 42 | lgb_huber OOF MAE: 14.7023
+  Seed 42 | xgb_abs OOF MAE: 14.7315
+  Seed 42 | cat_mae OOF MAE: 14.6126
+
+  -- Seed 123 (2/5) --
+    fold1 lgb_mae: MAE=14.7828 (5.5s)
+    fold1 lgb_huber: MAE=14.8673 (7.3s)
+    fold1 xgb_abs: MAE=14.9671 (3.8s)
+    fold1 cat_mae: MAE=14.7816 (2.9s)
+    fold2 lgb_mae: MAE=15.2678 (5.4s)
+    fold2 lgb_huber: MAE=15.3589 (8.1s)
+    fold2 xgb_abs: MAE=15.2686 (4.0s)
+    fold2 cat_mae: MAE=15.2601 (3.2s)
+    fold3 lgb_mae: MAE=14.0969 (5.3s)
+    fold3 lgb_huber: MAE=14.2267 (7.4s)
+    fold3 xgb_abs: MAE=14.3881 (3.7s)
+    fold3 cat_mae: MAE=14.0891 (3.5s)
+    fold4 lgb_mae: MAE=14.6635 (5.4s)
+    fold4 lgb_huber: MAE=14.7390 (7.5s)
+    fold4 xgb_abs: MAE=14.6699 (3.9s)
+    fold4 cat_mae: MAE=14.6634 (3.5s)
+    fold5 lgb_mae: MAE=14.2790 (5.4s)
+    fold5 lgb_huber: MAE=14.3489 (7.0s)
+    fold5 xgb_abs: MAE=14.2786 (3.9s)
+    fold5 cat_mae: MAE=14.2779 (3.2s)
+  Seed 123 | lgb_mae OOF MAE: 14.6180
+  Seed 123 | lgb_huber OOF MAE: 14.7082
+  Seed 123 | xgb_abs OOF MAE: 14.7144
+  Seed 123 | cat_mae OOF MAE: 14.6144
+
+  -- Seed 456 (3/5) --
+    fold1 lgb_mae: MAE=14.7827 (5.4s)
+    fold1 lgb_huber: MAE=14.8796 (7.7s)
+    fold1 xgb_abs: MAE=14.7830 (3.8s)
+    fold1 cat_mae: MAE=14.7746 (3.8s)
+    fold2 lgb_mae: MAE=15.2723 (5.3s)
+    fold2 lgb_huber: MAE=15.3620 (7.7s)
+    fold2 xgb_abs: MAE=15.2651 (3.9s)
+    fold2 cat_mae: MAE=15.2558 (3.4s)
+    fold3 lgb_mae: MAE=14.0961 (5.3s)
+    fold3 lgb_huber: MAE=14.2182 (7.8s)
+    fold3 xgb_abs: MAE=14.4042 (3.8s)
+    fold3 cat_mae: MAE=14.0878 (2.9s)
+    fold4 lgb_mae: MAE=14.6622 (5.9s)
+    fold4 lgb_huber: MAE=14.7511 (8.1s)
+    fold4 xgb_abs: MAE=14.6677 (3.9s)
+    fold4 cat_mae: MAE=14.6563 (4.5s)
+    fold5 lgb_mae: MAE=14.2775 (5.3s)
+    fold5 lgb_huber: MAE=14.3256 (9.1s)
+    fold5 xgb_abs: MAE=14.2807 (4.0s)
+    fold5 cat_mae: MAE=14.2747 (3.3s)
+  Seed 456 | lgb_mae OOF MAE: 14.6182
+  Seed 456 | lgb_huber OOF MAE: 14.7073
+  Seed 456 | xgb_abs OOF MAE: 14.6801
+  Seed 456 | cat_mae OOF MAE: 14.6098
+
+  -- Seed 789 (4/5) --
+    fold1 lgb_mae: MAE=14.7822 (5.5s)
+    fold1 lgb_huber: MAE=14.8691 (7.7s)
+    fold1 xgb_abs: MAE=14.7887 (4.0s)
+    fold1 cat_mae: MAE=14.7731 (3.4s)
+    fold2 lgb_mae: MAE=15.2666 (5.3s)
+    fold2 lgb_huber: MAE=15.3565 (8.3s)
+    fold2 xgb_abs: MAE=15.4588 (3.9s)
+    fold2 cat_mae: MAE=15.2531 (4.0s)
+    fold3 lgb_mae: MAE=14.0989 (5.4s)
+    fold3 lgb_huber: MAE=14.2233 (6.8s)
+    fold3 xgb_abs: MAE=14.4122 (3.9s)
+    fold3 cat_mae: MAE=14.0890 (3.1s)
+    fold4 lgb_mae: MAE=14.6696 (5.5s)
+    fold4 lgb_huber: MAE=14.7531 (7.7s)
+    fold4 xgb_abs: MAE=14.7963 (4.0s)
+    fold4 cat_mae: MAE=14.6602 (4.7s)
+    fold5 lgb_mae: MAE=14.2741 (5.5s)
+    fold5 lgb_huber: MAE=14.3337 (8.7s)
+    fold5 xgb_abs: MAE=14.2722 (4.6s)
+    fold5 cat_mae: MAE=14.2791 (3.5s)
+  Seed 789 | lgb_mae OOF MAE: 14.6183
+  Seed 789 | lgb_huber OOF MAE: 14.7071
+  Seed 789 | xgb_abs OOF MAE: 14.7456
+  Seed 789 | cat_mae OOF MAE: 14.6109
+
+  -- Seed 2024 (5/5) --
+    fold1 lgb_mae: MAE=14.7818 (5.4s)
+    fold1 lgb_huber: MAE=14.8682 (8.1s)
+    fold1 xgb_abs: MAE=14.9737 (3.8s)
+    fold1 cat_mae: MAE=14.7784 (3.1s)
+    fold2 lgb_mae: MAE=15.2693 (5.4s)
+    fold2 lgb_huber: MAE=15.3554 (7.3s)
+    fold2 xgb_abs: MAE=15.4452 (3.9s)
+    fold2 cat_mae: MAE=15.2633 (3.4s)
+    fold3 lgb_mae: MAE=14.0967 (5.4s)
+    fold3 lgb_huber: MAE=14.2272 (6.4s)
+    fold3 xgb_abs: MAE=14.3854 (3.9s)
+    fold3 cat_mae: MAE=14.0891 (3.4s)
+    fold4 lgb_mae: MAE=14.6713 (5.4s)
+    fold4 lgb_huber: MAE=14.7491 (8.2s)
+    fold4 xgb_abs: MAE=14.6662 (4.0s)
+    fold4 cat_mae: MAE=14.6634 (3.4s)
+    fold5 lgb_mae: MAE=14.2785 (5.4s)
+    fold5 lgb_huber: MAE=14.3274 (8.9s)
+    fold5 xgb_abs: MAE=14.2768 (4.2s)
+    fold5 cat_mae: MAE=14.2779 (3.0s)
+  Seed 2024 | lgb_mae OOF MAE: 14.6195
+  Seed 2024 | lgb_huber OOF MAE: 14.7055
+  Seed 2024 | xgb_abs OOF MAE: 14.7494
+  Seed 2024 | cat_mae OOF MAE: 14.6144
+
+[4] OOF 앙상블 평가...
+  lgb_mae: OOF MAE = 14.6172
+  lgb_huber: OOF MAE = 14.7028
+  xgb_abs: OOF MAE = 14.7022
+  cat_mae: OOF MAE = 14.6108
+
+  [앙상블 OOF MAE]: 14.6401
+
+[5] Full-fit 최종 예측...
+  seed 42 full-fit...
+    lgb_mae: n_iters=50
+    lgb_huber: n_iters=50
+    xgb_abs: n_iters=50
+    cat_mae: n_iters=50
+  seed 123 full-fit...
+    lgb_mae: n_iters=50
+    lgb_huber: n_iters=50
+    xgb_abs: n_iters=50
+    cat_mae: n_iters=50
+  seed 456 full-fit...
+    lgb_mae: n_iters=50
+    lgb_huber: n_iters=50
+    xgb_abs: n_iters=50
+    cat_mae: n_iters=50
+  seed 789 full-fit...
+    lgb_mae: n_iters=50
+    lgb_huber: n_iters=50
+    xgb_abs: n_iters=50
+    cat_mae: n_iters=50
+  seed 2024 full-fit...
+    lgb_mae: n_iters=50
+    lgb_huber: n_iters=50
+    xgb_abs: n_iters=50
+    cat_mae: n_iters=50
+
+[6] 제출 파일 생성...
+
+============================================================
+완료! 총 소요시간: 9.8분
+OOF MAE: 14.6401
+제출 파일: submission_step19_temporal_features.csv
+예측값 범위: [7.98, 17.50]
+예측값 평균: 10.3555
+============================================================

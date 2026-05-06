@@ -1,0 +1,61 @@
+Device: mps
+
+============================================================
+1. 데이터 로딩
+============================================================
+train: (250000, 108) | test: (50000, 107)
+
+============================================================
+2. 피처 엔지니어링 (Step20 동일)
+============================================================
+  layout_te cold-start: 20000행
+
+  피처 수: 448개
+  train: (250000, 448) | test: (50000, 448)
+
+============================================================
+3. TabM 학습 (3seeds × 5folds, K=32, hidden=[512, 256, 128])
+============================================================
+  seed=42 fold=1 | val MAE=9.3243 | stopped@ep1 | 163.5s
+  seed=42 fold=2 | val MAE=9.3485 | stopped@ep1 | 173.8s
+  seed=42 fold=3 | val MAE=8.5956 | stopped@ep2 | 195.5s
+  seed=42 fold=4 | val MAE=9.6481 | stopped@ep2 | 205.0s
+  seed=42 fold=5 | val MAE=9.3837 | stopped@ep1 | 187.2s
+  seed=42 OOF MAE: 9.2600 ± fold_std=0.3519 | 15.4min
+
+  seed=123 fold=1 | val MAE=9.2468 | stopped@ep1 | 181.0s
+  seed=123 fold=2 | val MAE=9.5777 | stopped@ep3 | 216.0s
+  seed=123 fold=3 | val MAE=8.6460 | stopped@ep2 | 210.1s
+  seed=123 fold=4 | val MAE=9.5823 | stopped@ep1 | 184.4s
+  seed=123 fold=5 | val MAE=10.1348 | stopped@ep5 | 202.4s
+  seed=123 OOF MAE: 9.4375 ± fold_std=0.4878 | 16.6min
+
+  seed=456 fold=1 | val MAE=9.3255 | stopped@ep2 | 177.2s
+  seed=456 fold=2 | val MAE=9.6439 | stopped@ep1 | 172.4s
+  seed=456 fold=3 | val MAE=8.7058 | stopped@ep2 | 172.8s
+  seed=456 fold=4 | val MAE=9.5728 | stopped@ep1 | 170.2s
+  seed=456 fold=5 | val MAE=9.3797 | stopped@ep2 | 176.3s
+  seed=456 OOF MAE: 9.3255 ± fold_std=0.3315 | 14.5min
+
+============================================================
+4. 앙상블
+============================================================
+  seed=   42 OOF MAE: 9.2600
+  seed=  123 OOF MAE: 9.4375
+  seed=  456 OOF MAE: 9.3255
+
+  ▶ 앙상블 OOF MAE : 9.1152
+  ▶ 총 소요 시간    : 46.5분
+
+  예측값 분포: min=0.40 | mean=17.88 | max=281.70 | p95=44.84
+
+  Step 비교:
+    Step20 (LGB+XGB+Cat)  OOF: 8.5964  Public: 10.0606
+    Step25 TabM           OOF: 9.1152
+
+  OOF 저장: oof_step25_tabm.csv
+  블렌드 저장: submission_step25_blend.csv
+  블렌드 가중치: step20=0.515 | tabm=0.485
+
+제출 파일: submission_step25_tabm_only.csv
+OOF MAE: 9.1152
